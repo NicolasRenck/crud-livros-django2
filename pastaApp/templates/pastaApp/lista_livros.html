@@ -1,0 +1,313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --border: #e8e4db;
+      --border2: #d4cfc4;
+      --accent: #2c5f2e;
+      --accent-lt: #eef4ee;
+      --red: #c0392b;
+      --red-lt: #fdf0ee;
+      --text: #1a1a18;
+      --muted: #888680;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Header */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .brand span { color: var(--accent); }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-info {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .user-info strong { color: var(--text); }
+
+    .btn-logout {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-logout:hover {
+      color: var(--red);
+      border-color: #f0c4c0;
+      background: var(--red-lt);
+    }
+
+    /* Main */
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .page-header p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .btn-add {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-add:hover {
+      background: #234d25;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(44,95,46,0.25);
+    }
+
+    /* Lista */
+    .livros-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .livro-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .livro-card:nth-child(1) { animation-delay: 0.05s; }
+    .livro-card:nth-child(2) { animation-delay: 0.1s; }
+    .livro-card:nth-child(3) { animation-delay: 0.15s; }
+    .livro-card:nth-child(4) { animation-delay: 0.2s; }
+    .livro-card:nth-child(5) { animation-delay: 0.25s; }
+
+    .livro-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .livro-avatar {
+      width: 44px;
+      height: 44px;
+      background: var(--accent-lt);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .livro-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .livro-titulo {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .livro-autor {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .livro-acoes {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .btn-acao {
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.35rem 0.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-detalhe {
+      background: #f0f0ec;
+      color: var(--muted);
+    }
+
+    .btn-detalhe:hover { background: var(--border); color: var(--text); }
+
+    .btn-editar {
+      background: var(--accent-lt);
+      color: var(--accent);
+    }
+
+    .btn-editar:hover { background: var(--accent); color: #fff; }
+
+    .btn-deletar {
+      background: var(--red-lt);
+      color: var(--red);
+    }
+
+    .btn-deletar:hover { background: var(--red); color: #fff; }
+
+    /* Empty */
+    .empty {
+      text-align: center;
+      padding: 4rem 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      background: var(--surface);
+      border: 1px dashed var(--border2);
+      border-radius: var(--radius);
+    }
+
+    .empty p { margin-top: 0.5rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 560px) {
+      .livro-card { flex-direction: column; align-items: flex-start; }
+      .livro-acoes { width: 100%; justify-content: flex-end; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">Minha <span>Biblioteca</span></div>
+    <div class="header-actions">
+      <span class="user-info">Olá, <strong>{{ request.user|title }}</strong></span>
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-header">
+      <div>
+        <h1>Seus Livros</h1>
+        <p>{{ livros.count }} livro{{ livros.count|pluralize }} cadastrado{{ livros.count|pluralize }}</p>
+      </div>
+      <a href="{% url 'criar_livro' %}" class="btn-add">+ Adicionar livro</a>
+    </div>
+
+    <div class="livros-lista">
+      {% for livro in livros %}
+        <div class="livro-card">
+          <div class="livro-avatar">{{ livro.livro|first|upper }}</div>
+          <div class="livro-info">
+            <div class="livro-titulo">{{ livro.livro }}</div>
+            <div class="livro-autor">{{ livro.autor }}</div>
+          </div>
+          <div class="livro-acoes">
+            <a href="{% url 'detalhe_livro' livro.slug %}" class="btn-acao btn-detalhe">Ver</a>
+            <a href="{% url 'editar_livro' livro.slug %}" class="btn-acao btn-editar">Editar</a>
+            <a href="{% url 'deletar_livro' livro.slug %}" class="btn-acao btn-deletar">Excluir</a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="empty">
+          <p>Nenhum livro cadastrado ainda.</p>
+          <p>Clique em "Adicionar livro" para começar.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+</body>
+</html>

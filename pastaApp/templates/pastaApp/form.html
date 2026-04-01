@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ acao }} Livro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --border: #e8e4db;
+      --accent: #2c5f2e;
+      --accent-lt: #eef4ee;
+      --text: #1a1a18;
+      --muted: #888680;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 520px;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--accent); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.75rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.1rem;
+    }
+
+    label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(44,95,46,0.1);
+      background: #fff;
+    }
+
+    textarea { resize: vertical; min-height: 100px; }
+
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-submit {
+      flex: 1;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: #234d25;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(44,95,46,0.25);
+    }
+
+    .btn-cancel {
+      flex: 1;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.8rem;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .btn-cancel:hover { border-color: var(--muted); color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <a href="{% url 'lista_livros' %}" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Voltar à biblioteca
+    </a>
+
+    <div class="card">
+      <h1>{{ acao }} Livro</h1>
+      <p>Preencha os dados do livro abaixo.</p>
+      <div class="divider"></div>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="id_livro">Título</label>
+          <input type="text" name="livro" id="id_livro" value="{{ form.livro.value|default:'' }}" placeholder="Título do livro" required/>
+          {% if form.livro.errors %}<span style="font-size:0.8rem;color:#c0392b;">{{ form.livro.errors|join:", " }}</span>{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="id_autor">Autor</label>
+          <input type="text" name="autor" id="id_autor" value="{{ form.autor.value|default:'' }}" placeholder="Nome do autor" required/>
+          {% if form.autor.errors %}<span style="font-size:0.8rem;color:#c0392b;">{{ form.autor.errors|join:", " }}</span>{% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="id_descricao">Descrição</label>
+          <textarea name="descricao" id="id_descricao" placeholder="Descrição do livro (opcional)">{{ form.descricao.value|default:'' }}</textarea>
+        </div>
+
+        <div class="btn-row">
+          <a href="{% url 'lista_livros' %}" class="btn-cancel">Cancelar</a>
+          <button type="submit" class="btn-submit">{{ acao }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
