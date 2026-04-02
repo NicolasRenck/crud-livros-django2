@@ -49,7 +49,7 @@ HTML5 + CSS3 (Templates customizados).
 
 ## Como rodar localmente
 ```bash
-git clone https://github.com/NicolasRenck/agenda-telefonica
+git clone https://github.com/NicolasRenck/crud-livros-django2
 cd crud_livros02
 python -m venv venv
 venv\Scripts\activate  # Windows
