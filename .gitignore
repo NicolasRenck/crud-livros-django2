@@ -1,6 +1,13 @@
-__pycache__/
-*.pyc
+
 venv/
-.git
+env/
 .env
-db_sqlite3
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+.dockerignore
+.vscode/
+.idea/
+static/
+media/
